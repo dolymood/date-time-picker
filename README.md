@@ -2,9 +2,7 @@
 
 Material Date/Time Picker
 
-![Select date](https://github.com/dolymood/date-time-picker/blob/master/assets/date.png?)
-
-![Select time](https://github.com/dolymood/date-time-picker/blob/master/assets/time.png?)
+![Select date](https://github.com/dolymood/date-time-picker/blob/master/assets/date.png?) ![Select time](https://github.com/dolymood/date-time-picker/blob/master/assets/time.png?)
 
 ## Installation
 
