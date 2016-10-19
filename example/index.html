@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>date-time-picker examples</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+  <link href="date-time-picker.min.css" rel="stylesheet">
+  <script type="text/javascript" src="date-time-picker.min.js"></script>
+</head>
+</head>
+<body>
+  <h1>date-time-picker examples</h1>
+  <input type="date">
+  <input type="datetime">
+  <input type="time">
+  <button id="showDate">Show Picker</button>
+  <button id="showTime">Show Time</button>
+  <script type="text/javascript">
+  var dt
+  var dtt
+  showDate.onclick = function () {
+    dt = new DateTimePicker.Date({
+      lang: 'EN'
+    })
+    dt.on('selected', function (formatDate, now) {
+      console.log('selected date: ', formatDate, now)
+    })
+  }
+  showTime.onclick = function () {
+    dtt = new DateTimePicker.Time({
+      // minuteStep: 10
+    })
+    dtt.on('selected', function (formatTime, now) {
+      console.log('selected time: ', formatTime, now)
+    })
+  }
+  </script>
+</body>
+</html>

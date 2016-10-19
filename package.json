@@ -1,0 +1,49 @@
+{
+  "name": "date-time-picker",
+  "library": "DateTimePicker",
+  "version": "0.0.1",
+  "description": "Material Date/Time Picker",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "webpack -w",
+    "build": "webpack --config webpack.build.config.js"
+  },
+  "files": [
+    "src",
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dolymood/date-time-picker.git"
+  },
+  "keywords": [
+    "datepicker",
+    "timepicker",
+    "datetimepicker",
+    "date",
+    "time",
+    "picker",
+    "calendar"
+  ],
+  "author": "dolymood",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dolymood/date-time-picker/issues"
+  },
+  "homepage": "https://github.com/dolymood/date-time-picker#readme",
+  "devDependencies": {
+    "webpack": "^1.13.0",
+    "eslint": "^2.8.0",
+    "eslint-config-standard": "^5.1.0",
+    "eslint-friendly-formatter": "^2.0.3",
+    "eslint-loader": "^1.3.0",
+    "eslint-plugin-promise": "^1.1.0",
+    "eslint-plugin-standard": "^1.3.2",
+    "css-loader": "^0.23.1",
+    "style-loader": "^0.13.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "html-webpack-plugin": "^2.16.0",
+    "chai": "^3.0.0",
+    "mocha": "^2.2.5"
+  }
+}
