@@ -1,6 +1,8 @@
 # date-time-picker
 
-Material Date/Time Picker
+No Dependencies Lightweight Material Date/Time Picker For Mobile Web
+
+Only 9.1k when gzipped
 
 ![Select date](https://github.com/dolymood/date-time-picker/blob/master/assets/date.png?) ![Select time](https://github.com/dolymood/date-time-picker/blob/master/assets/time.png?)
 
