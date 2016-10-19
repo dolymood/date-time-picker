@@ -20,7 +20,7 @@
   var dtt
   showDate.onclick = function () {
     dt = new DateTimePicker.Date({
-      lang: 'EN'
+      lang: 'zh-CN'
     })
     dt.on('selected', function (formatDate, now) {
       console.log('selected date: ', formatDate, now)
@@ -28,6 +28,7 @@
   }
   showTime.onclick = function () {
     dtt = new DateTimePicker.Time({
+      default: '12:27'
       // minuteStep: 10
     })
     dtt.on('selected', function (formatTime, now) {

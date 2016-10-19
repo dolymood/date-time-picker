@@ -19,6 +19,7 @@ var Events = {
     if (!listened) {
       this._eventData[name].push(func)
     }
+    return this
   },
 
   once: function once (name, func) {
@@ -28,6 +29,7 @@ var Events = {
       that.off(name, fuc)
     }
     this.on(name, fuc)
+    return this
   },
 
   off: function off (name, func) {
@@ -35,7 +37,7 @@ var Events = {
       this._eventData = {}
     }
     if (!this._eventData[name] || !this._eventData[name].length) {
-      return
+      return this
     }
     if (func) {
       utils.each(this._eventData[name], function (fuc, i) {
@@ -47,6 +49,7 @@ var Events = {
     } else {
       this._eventData[name] = []
     }
+    return this
   },
 
   trigger: function trigger (name) {
@@ -54,12 +57,13 @@ var Events = {
       this._eventData = {}
     }
     if (!this._eventData[name]) {
-      return
+      return this
     }
     var args = this._eventData[name].slice.call(arguments, 1)
     utils.each(this._eventData[name], function (fuc) {
       fuc.apply(null, args)
     })
+    return this
   }
 }
 

@@ -3,7 +3,7 @@
   "library": "DateTimePicker",
   "version": "0.0.1",
   "description": "Material Date/Time Picker",
-  "main": "src/index.js",
+  "main": "src/date+time.js",
   "scripts": {
     "dev": "webpack -w",
     "build": "webpack --config webpack.build.config.js"

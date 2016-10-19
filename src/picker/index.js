@@ -9,11 +9,11 @@ function Picker (options, config) {
     options = {}
   }
 
-  this.lang = options.lang || 'zh-CN'
+  this.lang = options.lang || 'EN'
   this.lang = options.lang
   var defConfig = DEFCONFIG[this.lang]
   if (!defConfig) {
-    defConfig = DEFCONFIG['zh-CN']
+    defConfig = DEFCONFIG['EN']
   }
   this.config = utils.extend(defConfig, config || {})
 
@@ -189,7 +189,7 @@ utils.extend(Picker.prototype, {
     this.ele && (this.ele.style.display = 'none')
   },
   destroy: function () {
-    this.trigger('destroy', this.dateTime.now, this.dateTime)
+    this.trigger('destroy')
     this.hide()
     this.desEvts()
     this.container.removeChild(this.ele)
