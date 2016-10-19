@@ -19,25 +19,25 @@ npm install date-time-picker
 
 As a npm package:
 
-```
+```js
 var DateTimePicker = require('date-time-picker')
 ```
 
 AMD:
 
-```
+```js
 var DateTimePicker = require('/path/to/date-time-picker.min.js')
 ```
 
 Script load:
 
-```
+```js
 var DateTimePicker = window.DateTimePicker
 ```
 
 ### DatePicker
 
-```
+```js
 btn.onclick = function () {
   var datePicker = new DateTimePicker.Date(options, config)
   datePicker.on('selected', function (formatDate, now) {
@@ -49,7 +49,7 @@ btn.onclick = function () {
 
 ### TimePicker
 
-```
+```js
 btn.onclick = function () {
   var timePicker = new DateTimePicker.Time(options, config)
   timePicker.on('selected', function (formatTime, now) {
@@ -128,7 +128,7 @@ Default English(EN):
 
 Default 中文(zh-CN):
 
-```
+```js
 {
   day: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
   shortDay: ['日', '一', '二', '三', '四', '五', '六'],
