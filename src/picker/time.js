@@ -35,9 +35,6 @@ Picker.extend(TimePicker, {
       that.toMinutes()
     })
   },
-  selfChange: function () {
-    this.panel.selfChange()
-  },
   _to: function (type, name) {
     if (this.options.type === type) {
       return

@@ -45,8 +45,9 @@ utils.extend(TimePanel.prototype, {
     this._initMain()
   },
   _initMain: function () {
-    this.main = document.createElement('div')
-    this.main.className = 'time-picker-main ' + (this.type === 'D' ? 'time-picker-main-hours' : 'time-picker-main-minutes')
+    this.main = utils.createElement('div', {
+      className: 'time-picker-main ' + (this.type === 'D' ? 'time-picker-main-hours' : 'time-picker-main-minutes')
+    })
     this.mainStyle = this.main.style
     this.picker.content.appendChild(this.main)
   },
@@ -68,7 +69,7 @@ utils.extend(TimePanel.prototype, {
     this.pickerLineEle.style[utils.prefixNames.transform] = 'rotate(' + r + 'deg)'
     this.pickerLineEle.classList[newActiveEle.classList.contains('picker-cell-inner') ? 'add' : 'remove']('time-picker-line-inner')
   },
-  _start: function (e) {
+  __start: function (e) {
     var that = this
     var finalTarget = null
     var setToTarget = function (point) {
@@ -79,31 +80,18 @@ utils.extend(TimePanel.prototype, {
       }
     }
     setToTarget(e.touches[0])
-    var touchmove = function (e) {
-      e.preventDefault()
-      e.stopPropagation()
+    this.__move = function (e) {
       setToTarget(e.touches[0])
     }
-    var touchend = function (e) {
-      document.removeEventListener('touchmove', touchmove, false)
-      document.removeEventListener('touchend', touchend, false)
-      document.removeEventListener('touchcancel', touchend, false)
+    this.__end = function (e) {
       finalTarget && that.picker.selV({
         realTarget: finalTarget
       })
     }
-    document.addEventListener('touchmove', touchmove, false)
-    document.addEventListener('touchend', touchend, false)
-    document.addEventListener('touchcancel', touchend, false)
   },
   destroy: function () {
     this.picker.content.removeChild(this.main)
-    this.picker = null
-    this.main = null
-    this.mainStyle = null
-    this.headActiveEle = null
-    this.activeEle = null
-    this.pickerLineEle = null
+    utils.set2Null(['picker', 'main', 'mainStyle', 'headActiveEle', 'activeEle', 'pickerLineEle', '__move', '__end'], this)
   }
 })
 

@@ -13,6 +13,11 @@ utils.extend(DaysPanel.prototype, {
     if (!this.main) {
       this._init()
     }
+    this._renderHead()
+    this.main.innerHTML = buildCalendar(this.picker.prevDateTime, this.picker.config, 'prev') + buildCalendar(this.picker.dateTime, this.picker.config, 'curr') + buildCalendar(this.picker.nextDateTime, this.picker.config, 'next')
+    this.afterRender()
+  },
+  _renderHead: function () {
     this.picker.head.innerHTML = (
       '<div class="picker-year" data-click="toYears">' + this.picker.dateTime.parsedNow.year + '</div>' +
       '<div class="picker-date picker-head-active" data-click="toMonths">' +
@@ -22,7 +27,17 @@ utils.extend(DaysPanel.prototype, {
         ).replace('#', this.picker.config.day[this.picker.dateTime.parsedNow.day]) +
       '</div>'
     )
-    this.main.innerHTML = buildCalendar(this.picker.prevDateTime, this.picker.config, 'prev') + buildCalendar(this.picker.dateTime, this.picker.config, 'curr') + buildCalendar(this.picker.nextDateTime, this.picker.config, 'next')
+  },
+  afterRender: function () {
+    this.activeDateEle = this.main.querySelector('.picker-bdy-curr .picker-active')
+  },
+  selfChange: function () {
+    this._renderHead()
+    this.activeDateEle && this.activeDateEle.classList.remove('picker-active')
+    var v = this.picker.dateTime.getLevelValue()
+    var newActiveEle = this.main.querySelector('.picker-bdy-curr i[data-val="' + v + '"]')
+    newActiveEle.classList.add('picker-active')
+    this.activeDateEle = newActiveEle
   },
   _init: function () {
     this._initMain()
@@ -30,15 +45,17 @@ utils.extend(DaysPanel.prototype, {
   },
 
   _initMain: function () {
-    this.main = document.createElement('div')
-    this.main.className = 'date-picker-main'
+    this.main = utils.createElement('div', {
+      className: 'date-picker-main'
+    })
     this.mainStyle = this.main.style
     this.picker.content.appendChild(this.main)
     this.mainWidth = this.main.offsetWidth
   },
   _initArrow: function () {
-    this.arrow = document.createElement('div')
-    this.arrow.className = 'picker-actions-arrow'
+    this.arrow = utils.createElement('div', {
+      className: 'picker-actions-arrow'
+    })
     this.arrow.innerHTML = '<i data-click="prevMonth">←</i><i data-click="nextMonth">→</i>'
     this.arrowStyle = this.arrow.style
     this.picker.content.appendChild(this.arrow)
@@ -57,12 +74,11 @@ utils.extend(DaysPanel.prototype, {
     var that = this
     var TIME = 300 / 100
     var transitionTime = TIME * Math.abs(v - base)
-    var tid = null
     var ended = function () {
-      window.clearTimeout(tid)
       if (!that._slideEndFn) {
         return
       }
+      window.clearTimeout(that._slideEndFn.tid)
       that._slideEndFn = null
       that.main.removeEventListener(utils.prefixNames.transitionEnd, ended, false)
       that.mainStyle.webkitTransition = 'none 0ms'
@@ -70,10 +86,11 @@ utils.extend(DaysPanel.prototype, {
       that.mainStyle[utils.prefixNames.transform] = 'translateX(-100%) translateZ(0)'
       cb && cb.call(that)
     }
+    this._slideEndFn && this._slideEndFn()
     this._slideEndFn = ended
     this.mainStyle[utils.prefixNames.transform] = 'translateX(' + v + '%) translateZ(0)'
     if (transitionTime > 0) {
-      tid = window.setTimeout(ended, transitionTime)
+      this._slideEndFn.tid = window.setTimeout(ended, transitionTime)
       transitionTime += 'ms'
       this.mainStyle.webkitTransition = transitionTime
       this.mainStyle.transition = transitionTime
@@ -101,16 +118,14 @@ utils.extend(DaysPanel.prototype, {
       this.picker.setNowToNext()
     })
   },
-  _start: function (e) {
+  __start: function (e) {
     var point = e.touches[0]
     var pointX = point.pageX
     var that = this
     var base = -100
-    var toV = 0
+    var toV = base
     var shouldChange = false
-    var touchmove = function (e) {
-      e.preventDefault()
-      e.stopPropagation()
+    this.__move = function (e) {
       var point = e.touches[0]
       var diffX = point.pageX - pointX
       diffX = diffX * 100 / that.mainWidth
@@ -123,31 +138,21 @@ utils.extend(DaysPanel.prototype, {
       that.arrowStyle.opacity = (100 - absX * 0.9) / 100
       that.mainStyle[utils.prefixNames.transform] = 'translateX(' + toV + '%) translateZ(0)'
     }
-    var touchend = function (e) {
+    this.__end = function (e) {
       that.arrowStyle.opacity = 1
       if (shouldChange) {
         that[toV > base ? 'prevMonth' : 'nextMonth'](toV)
       } else {
         that._slideTo(base, toV)
       }
-      document.removeEventListener('touchmove', touchmove, false)
-      document.removeEventListener('touchend', touchend, false)
-      document.removeEventListener('touchcancel', touchend, false)
     }
     this._slideEndFn && this._slideEndFn()
-    document.addEventListener('touchmove', touchmove, false)
-    document.addEventListener('touchend', touchend, false)
-    document.addEventListener('touchcancel', touchend, false)
   },
   destroy: function () {
     this._slideEndFn && this._slideEndFn()
     this.picker.content.removeChild(this.main)
     this.picker.content.removeChild(this.arrow)
-    this.picker = null
-    this.main = null
-    this.mainStyle = null
-    this.arrow = null
-    this.arrowStyle = null
+    utils.set2Null(['picker', 'main', 'mainStyle', 'arrow', 'arrowStyle', 'activeDateEle', '__move', '__end'], this)
   }
 })
 

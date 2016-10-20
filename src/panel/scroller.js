@@ -19,6 +19,11 @@ utils.extend(ScrollerPanel.prototype, {
     if (!this.main) {
       this._init()
     }
+    this._renderHead()
+    this.main.innerHTML = CONFIG[this.type](this.picker.dateTime, this.rows)
+    this._afterRender()
+  },
+  _renderHead: function () {
     var isYears = this.type === 'C'
     this.picker.head.innerHTML = (
       '<div class="picker-year' + (isYears ? ' picker-head-active' : '') + '"' + (isYears ? '' : ' data-click="toYears"') + '>' + this.picker.dateTime.parsedNow.year + '</div>' +
@@ -29,15 +34,12 @@ utils.extend(ScrollerPanel.prototype, {
         ).replace('#', this.picker.config.day[this.picker.dateTime.parsedNow.day]) +
       '</div>'
     )
-    this.main.innerHTML = CONFIG[this.type](this.picker.dateTime, this.rows)
-    this._afterRender()
   },
   _afterRender: function () {
     var activeEle = this.main.querySelector('.picker-active')
     this.itemHeight = activeEle.offsetHeight
+    this.activeEle = activeEle
     var t = activeEle.offsetTop - (this.contentHeight - this.itemHeight) / 2
-    // this.maxY = -(this.main.querySelector('.picker-row').offsetTop - (this.contentHeight - this.itemHeight) / 2)
-    // this.minY = -(this.main.querySelector('.picker-row:last-child').offsetTop - (this.contentHeight - this.itemHeight) / 2)
     this._slideTo(-t, 0)
   },
   _init: function () {
@@ -46,15 +48,17 @@ utils.extend(ScrollerPanel.prototype, {
     this._initMidd()
   },
   _initMain: function () {
-    this.main = document.createElement('div')
-    this.main.className = 'scroller-picker-main'
+    this.main = utils.createElement('div', {
+      className: 'scroller-picker-main'
+    })
     this.mainStyle = this.main.style
     this.picker.content.appendChild(this.main)
     this.contentHeight = this.picker.content.offsetHeight
   },
   _initMidd: function () {
-    this.midd = document.createElement('div')
-    this.midd.className = 'scroller-picker-midd'
+    this.midd = utils.createElement('div', {
+      className: 'scroller-picker-midd'
+    })
     this.middStyle = this.midd.style
     this.picker.content.appendChild(this.midd)
   },
@@ -66,29 +70,43 @@ utils.extend(ScrollerPanel.prototype, {
     this.mainStyle.display = 'none'
     this.middStyle.display = 'none'
   },
-
+  selfChange: function () {
+    if (this.__ani) {
+      return
+    }
+    var that = this
+    this._renderHead()
+    this.activeEle.classList.remove('picker-active')
+    var v = this.picker.dateTime.getLevelValue()
+    var newActiveEle = this.main.querySelector('.picker-row[data-val="' + v + '"]')
+    var realTo = (this.activeEle.dataset.val - v) * this.itemHeight + this.posY
+    that._slideTo(realTo, 0, function () {
+      newActiveEle.classList.add('picker-active')
+      that.activeEle = newActiveEle
+    })
+  },
   _slideTo: function (v, transitionTime, cb) {
     var that = this
-    var tid = null
     var ended = function (e) {
-      window.clearTimeout(tid)
       if (!that._slideEndFn) {
         return
       }
+      window.clearTimeout(that._slideEndFn.tid)
       that._slideEndFn = null
       that.main.removeEventListener(utils.prefixNames.transitionEnd, ended, false)
+      cb && cb.call(that, e)
       that.mainStyle.webkitTransition = 'none 0ms'
       that.mainStyle.transition = 'none 0ms'
-      cb && cb.call(that, e)
     }
+    this._slideEndFn && this._slideEndFn()
     this._slideEndFn = ended
     this.posY = v
     this.mainStyle[utils.prefixNames.transform] = 'translateY(' + this.posY + 'px) translateZ(0)'
     var timingFn = ' cubic-bezier(0.25, 0.46, 0.45, 0.94)'
     if (transitionTime > 0) {
-      tid = window.setTimeout(function () {
+      this._slideEndFn.tid = window.setTimeout(function () {
         ended({})
-      }, transitionTime)
+      }, transitionTime + 20)
       transitionTime += 'ms'
       this.mainStyle.webkitTransition = transitionTime + timingFn
       this.mainStyle.transition = transitionTime + timingFn
@@ -97,23 +115,21 @@ utils.extend(ScrollerPanel.prototype, {
       ended()
     }
   },
-  _start: function (e) {
+  __start: function (e) {
     this._slideEndFn && this._slideEndFn()
     var point = e.touches[0]
     var pointY = point.pageY
     var that = this
     var base = this.posY
-    var toV = 0
-    var startTime = new Date().getTime()
+    var toV = base
+    var startTime = e.timeStamp
     var startY = base
-    var touchmove = function (e) {
-      e.preventDefault()
-      e.stopPropagation()
+    this.__move = function (e) {
       var point = e.touches[0]
       var diffY = point.pageY - pointY
       toV = base + diffY
 
-      var moveTime = new Date().getTime()
+      var moveTime = e.timeStamp
       if (moveTime - startTime > 300) {
         startTime = moveTime
         startY = toV
@@ -127,21 +143,25 @@ utils.extend(ScrollerPanel.prototype, {
       var targetV = levelVal - count
       var min = that.rows[0][0]
       var max = that.rows[that.rows.length - 1][0]
+      var realTo
       if (targetV < min) {
         count = levelVal - min
         targetV = min
+        realTo = count * that.itemHeight + base
       } else if (targetV > max) {
         count = levelVal - max
         targetV = max
+        realTo = count * that.itemHeight + base
+      } else {
+        realTo = count * that.itemHeight + base
       }
-      var realTo = count * that.itemHeight + base
       return {
         realTo: realTo,
         targetV: targetV
       }
     }
-    var touchend = function (e) {
-      var endTime = new Date().getTime()
+    this.__end = function (e) {
+      var endTime = e.timeStamp
       var duration = endTime - startTime
       var time
       // 根据参数更新 toV 的值
@@ -174,29 +194,22 @@ utils.extend(ScrollerPanel.prototype, {
           that.picker.changeTo(targetV)
         } else {
           // 中途停止动画的
-          var p = parsePos(getComputedPosition(that.main))
+          var c = getComputedPosition(that.main)
+          var p = parsePos(c)
           that._slideTo(p.realTo, 0, function () {
+            that.__ani = true
             that.picker.changeTo(p.targetV, true)
+            that.__ani = false
           })
         }
       })
-      document.removeEventListener('touchmove', touchmove, false)
-      document.removeEventListener('touchend', touchend, false)
-      document.removeEventListener('touchcancel', touchend, false)
     }
-    document.addEventListener('touchmove', touchmove, false)
-    document.addEventListener('touchend', touchend, false)
-    document.addEventListener('touchcancel', touchend, false)
   },
   destroy: function () {
     this._slideEndFn && this._slideEndFn()
     this.picker.content.removeChild(this.main)
     this.picker.content.removeChild(this.midd)
-    this.picker = null
-    this.main = null
-    this.mainStyle = null
-    this.midd = null
-    this.middStyle = null
+    utils.set2Null(['picker', 'main', 'mainStyle', 'midd', 'middStyle', 'activeEle', '__move', '__end'], this)
   }
 })
 
@@ -229,7 +242,6 @@ function getComputedPosition (ele) {
   var matrix = window.getComputedStyle(ele, null)
   matrix = matrix[utils.prefixNames.transform].split(')')[0].split(', ')
   var y = +(matrix[13] || matrix[5])
-
   return y
 }
 

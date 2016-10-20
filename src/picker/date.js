@@ -38,6 +38,13 @@ Picker.extend(DatePicker, {
   setNowToNext: function () {
     this.setNow(this.nextDateTime.now)
   },
+  selV: function (e) {
+    var target = e.realTarget
+    var v = target.getAttribute('data-val') - 0
+    if (this.shouldSet(v)) {
+      this.changeTo(v, true)
+    }
+  },
   _to: function (type, name) {
     utils.extend(this.options, {
       type: type

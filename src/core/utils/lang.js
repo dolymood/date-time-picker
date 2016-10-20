@@ -119,6 +119,12 @@ function pad (val, len, cut) {
   return val.substring(cut ? i : i > 0 ? len : i)
 }
 
+function set2Null (array, that) {
+  array.forEach(function (v) {
+    that[v] = null
+  })
+}
+
 module.exports = {
   isFn: isFn,
   isStr: isStr,
@@ -131,5 +137,6 @@ module.exports = {
   each: each,
   noop: noop,
   extend: extend,
-  pad: pad
+  pad: pad,
+  set2Null: set2Null
 }
