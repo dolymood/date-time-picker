@@ -161,6 +161,8 @@ utils.extend(ScrollerPanel.prototype, {
       }
     }
     this.__end = function (e) {
+      this.__move = null
+      this.__end = null
       var endTime = e.timeStamp
       var duration = endTime - startTime
       var time

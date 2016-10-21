@@ -139,6 +139,8 @@ utils.extend(DaysPanel.prototype, {
       that.mainStyle[utils.prefixNames.transform] = 'translateX(' + toV + '%) translateZ(0)'
     }
     this.__end = function (e) {
+      this.__move = null
+      this.__end = null
       that.arrowStyle.opacity = 1
       if (shouldChange) {
         that[toV > base ? 'prevMonth' : 'nextMonth'](toV)

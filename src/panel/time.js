@@ -84,6 +84,8 @@ utils.extend(TimePanel.prototype, {
       setToTarget(e.touches[0])
     }
     this.__end = function (e) {
+      this.__move = null
+      this.__end = null
       finalTarget && that.picker.selV({
         realTarget: finalTarget
       })
