@@ -115,7 +115,7 @@ utils.extend(ScrollerPanel.prototype, {
       ended()
     }
   },
-  __start: function (e) {
+  _start: function (e) {
     this._slideEndFn && this._slideEndFn()
     var point = e.touches[0]
     var pointY = point.pageY

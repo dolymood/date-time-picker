@@ -118,7 +118,7 @@ utils.extend(DaysPanel.prototype, {
       this.picker.setNowToNext()
     })
   },
-  __start: function (e) {
+  _start: function (e) {
     var point = e.touches[0]
     var pointX = point.pageX
     var that = this

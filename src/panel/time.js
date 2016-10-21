@@ -69,7 +69,7 @@ utils.extend(TimePanel.prototype, {
     this.pickerLineEle.style[utils.prefixNames.transform] = 'rotate(' + r + 'deg)'
     this.pickerLineEle.classList[newActiveEle.classList.contains('picker-cell-inner') ? 'add' : 'remove']('time-picker-line-inner')
   },
-  __start: function (e) {
+  _start: function (e) {
     var that = this
     var finalTarget = null
     var setToTarget = function (point) {

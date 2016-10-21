@@ -94,6 +94,8 @@ utils.extend(pickerPro, {
   _initContent: function () {
     this.content = utils.createElement('div', {
       className: 'picker-content'
+    }, {
+      'data-touchstart': '_start'
     })
     this.ele.appendChild(this.content)
   },
