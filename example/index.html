@@ -15,29 +15,28 @@
 </head>
 <body>
   <h1>date-time-picker examples</h1>
-  <input type="date">
-  <input type="datetime">
-  <input type="time">
+  <input type="date" id="date">
+  <input type="time" id="time">
   <button id="showDate">Show Date</button>
   <button id="showTime">Show Time</button>
   <script type="text/javascript">
-  var dt
-  var dtt
   showDate.onclick = function () {
-    dt = new DateTimePicker.Date({
-      lang: 'zh-CN'
+    var dt = new DateTimePicker.Date({
+      lang: 'zh-CN',
+      default: date.value
     })
     dt.on('selected', function (formatDate, now) {
       console.log('selected date: ', formatDate, now)
+      date.value = formatDate
     })
   }
   showTime.onclick = function () {
-    dtt = new DateTimePicker.Time({
-      default: '12:27'
-      // minuteStep: 10
+    var dt = new DateTimePicker.Time({
+      default: time.value
     })
-    dtt.on('selected', function (formatTime, now) {
+    dt.on('selected', function (formatTime, now) {
       console.log('selected time: ', formatTime, now)
+      time.value = formatTime
     })
   }
   </script>
