@@ -27,7 +27,7 @@ function Picker (options, config) {
   this.options = options
   this.needDefFormat = !this.options.format
   this.init()
-  if (this.options.format && utils.isStr(this.options.default)) {
+  if (this.options.format && this.options.default && utils.isStr(this.options.default)) {
     this.options.default = utils.parseDate(this.options.default, this.options.format)
   }
   this._init()
