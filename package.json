@@ -42,8 +42,6 @@
     "css-loader": "^0.23.1",
     "style-loader": "^0.13.1",
     "extract-text-webpack-plugin": "^1.0.1",
-    "html-webpack-plugin": "^2.16.0",
-    "chai": "^3.0.0",
-    "mocha": "^2.2.5"
+    "html-webpack-plugin": "^2.16.0"
   }
 }
