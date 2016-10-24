@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Date-time-picker by dolymood</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Date-time-picker</h1>
+      <h2 class="project-tagline">No Dependencies Lightweight  Material Date/Time Picker For Mobile Web</h2>
+      <a href="https://github.com/dolymood/date-time-picker" class="btn">View on GitHub</a>
+      <a href="https://github.com/dolymood/date-time-picker/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/dolymood/date-time-picker/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="date-time-picker" class="anchor" href="#date-time-picker" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>date-time-picker</h1>
+
+<p>No Dependencies Lightweight Material Date/Time Picker For Mobile Web</p>
+
+<p><code>date-time-picker.min.js</code>: ~9k when gzipped
+<code>date-time-picker.min.css</code>: ~2k when gzipped</p>
+
+<p><img src="http://demo.aijc.net/js/date-time-picker/assets/date-time-picker.gif" alt="Select date and time"> <img src="http://demo.aijc.net/js/date-time-picker/assets/qr2.png" alt="QR"></p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Download from <a href="https://github.com/dolymood/date-time-picker/tree/master/dist">https://github.com/dolymood/date-time-picker/tree/master/dist</a>, it contains minified <code>js</code> and <code>css</code> files.</p>
+
+<p>Or use npm:</p>
+
+<pre><code>npm install date-time-picker
+</code></pre>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>As a npm package:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> DateTimePicker <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>date-time-picker<span class="pl-pds">'</span></span>)</pre></div>
+
+<p>AMD:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> DateTimePicker <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>/path/to/date-time-picker.min.js<span class="pl-pds">'</span></span>)</pre></div>
+
+<p>Script load:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> DateTimePicker <span class="pl-k">=</span> <span class="pl-c1">window</span>.<span class="pl-smi">DateTimePicker</span></pre></div>
+
+<h3>
+<a id="datepicker" class="anchor" href="#datepicker" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>DatePicker</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">btn</span>.<span class="pl-en">onclick</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+  <span class="pl-k">var</span> datePicker <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">DateTimePicker.Date</span>(options, config)
+  <span class="pl-smi">datePicker</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>selected<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">formatDate</span>, <span class="pl-smi">now</span>) {
+    <span class="pl-c">// formatData = 2016-10-19</span>
+    <span class="pl-c">// now = Date instance -&gt; Wed Oct 19 2016 20:28:12 GMT+0800 (CST)</span>
+  })
+}</pre></div>
+
+<h3>
+<a id="timepicker" class="anchor" href="#timepicker" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>TimePicker</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">btn</span>.<span class="pl-en">onclick</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+  <span class="pl-k">var</span> timePicker <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">DateTimePicker.Time</span>(options, config)
+  <span class="pl-smi">timePicker</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>selected<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">formatTime</span>, <span class="pl-smi">now</span>) {
+    <span class="pl-c">// formatTime = 18:30</span>
+    <span class="pl-c">// now = Date instance -&gt; Wed Oct 19 2016 18:30:13 GMT+0800 (CST)</span>
+  })
+}</pre></div>
+
+<h3>
+<a id="api-and-events" class="anchor" href="#api-and-events" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>API and Events</h3>
+
+<p>API:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">picker</span>.<span class="pl-en">show</span>()
+<span class="pl-smi">picker</span>.<span class="pl-en">hide</span>()
+<span class="pl-smi">picker</span>.<span class="pl-en">destroy</span>()</pre></div>
+
+<p>Events:</p>
+
+<div class="highlight highlight-source-js"><pre>picker
+  <span class="pl-c">// click OK button</span>
+  .<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>selected<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">formatValue</span>, <span class="pl-smi">now</span>) {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(formatValue, now)
+  })
+  <span class="pl-c">// click CANCEL button</span>
+  <span class="pl-c">// also trigger `destroy` event</span>
+  .<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>canceled<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>canceled<span class="pl-pds">'</span></span>)
+  })
+  .<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>destroy<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>destroy<span class="pl-pds">'</span></span>)
+  })</pre></div>
+
+<h2>
+<a id="options-and-config" class="anchor" href="#options-and-config" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Options and Config</h2>
+
+<h3>
+<a id="datepicker-options" class="anchor" href="#datepicker-options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>DatePicker Options</h3>
+
+<div class="highlight highlight-source-js"><pre>{
+  lang<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>EN<span class="pl-pds">'</span></span>, <span class="pl-c">// default 'EN'. One of 'EN', 'zh-CN'</span>
+  format<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>yyyy-MM-dd<span class="pl-pds">'</span></span>, <span class="pl-c">// default 'yyyy-MM-dd'</span>
+  default<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>2016-10-19<span class="pl-pds">'</span></span>, <span class="pl-c">// default `new Date()`. If `default` type is string, then it will be parsed to `Date` instance by `format` . Or it can be a `Date` instance</span>
+}</pre></div>
+
+<h3>
+<a id="timepicker-options" class="anchor" href="#timepicker-options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>TimePicker Options</h3>
+
+<div class="highlight highlight-source-js"><pre>{
+  lang<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>EN<span class="pl-pds">'</span></span>, <span class="pl-c">// default 'EN'</span>
+  format<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>HH:mm<span class="pl-pds">'</span></span>, <span class="pl-c">// default 'HH:mm'</span>
+  default<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>12:27<span class="pl-pds">'</span></span>, <span class="pl-c">// default `new Date()`. If `default` type is string, then it will be parsed to `Date` instance by `format` . Or it can be a `Date` instance</span>
+  minuteStep<span class="pl-k">:</span> <span class="pl-c1">5</span> <span class="pl-c">// default 5. Select minutes step</span>
+}</pre></div>
+
+<h3>
+<a id="config" class="anchor" href="#config" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Config</h3>
+
+<p>Default English(EN):</p>
+
+<div class="highlight highlight-source-js"><pre>{
+  day<span class="pl-k">:</span> [<span class="pl-s"><span class="pl-pds">'</span>Sun<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Mon<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Tue<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Wed<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Thu<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Fri<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Sat<span class="pl-pds">'</span></span>],
+  shortDay<span class="pl-k">:</span> [<span class="pl-s"><span class="pl-pds">'</span>S<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>M<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>T<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>W<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>T<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>F<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>S<span class="pl-pds">'</span></span>],
+  MDW<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>D, MM-d<span class="pl-pds">'</span></span>,
+  YM<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>yyyy-M<span class="pl-pds">'</span></span>,
+  OK<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>OK<span class="pl-pds">'</span></span>,
+  CANCEL<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>CANCEL<span class="pl-pds">'</span></span>
+}</pre></div>
+
+<p>Default 中文(zh-CN):</p>
+
+<div class="highlight highlight-source-js"><pre>{
+  day<span class="pl-k">:</span> [<span class="pl-s"><span class="pl-pds">'</span>周日<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>周一<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>周二<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>周三<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>周四<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>周五<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>周六<span class="pl-pds">'</span></span>],
+  shortDay<span class="pl-k">:</span> [<span class="pl-s"><span class="pl-pds">'</span>日<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>一<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>二<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>三<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>四<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>五<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>六<span class="pl-pds">'</span></span>],
+  MDW<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>M月d日D<span class="pl-pds">'</span></span>,
+  YM<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>yyyy年M月<span class="pl-pds">'</span></span>,
+  OK<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>确定<span class="pl-pds">'</span></span>,
+  CANCEL<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>取消<span class="pl-pds">'</span></span>
+}</pre></div>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
+
+<p>MIT</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/dolymood/date-time-picker">Date-time-picker</a> is maintained by <a href="https://github.com/dolymood">dolymood</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
