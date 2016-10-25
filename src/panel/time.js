@@ -25,10 +25,10 @@ utils.extend(TimePanel.prototype, {
     }
     var isHours = this.type === 'D'
     this.picker.head.innerHTML = (
-      '<div class="picker-hour' + (isHours ? ' picker-head-active' : '') + '"' + (isHours ? '' : ' data-click="toHours"') + '>' +
+      '<div class="picker-hour' + (isHours ? ' picker-head-active' : '') + '"' + (isHours ? '' : ' data-click="toHours" data-active="active"') + '>' +
         utils.formatDate(this.picker.dateTime.now, 'HH') +
       '</div>:' +
-      '<div class="picker-minute' + (!isHours ? ' picker-head-active' : '') + '"' + (!isHours ? '' : ' data-click="toMinutes"') + '>' +
+      '<div class="picker-minute' + (!isHours ? ' picker-head-active' : '') + '"' + (!isHours ? '' : ' data-click="toMinutes" data-active="active"') + '>' +
         utils.formatDate(this.picker.dateTime.now, 'mm') +
       '</div>'
     )
@@ -74,7 +74,7 @@ utils.extend(TimePanel.prototype, {
     var finalTarget = null
     var setToTarget = function (point) {
       var targetEle = document.elementFromPoint(point.pageX, point.pageY)
-      if (targetEle && targetEle.classList.contains('picker-cell') || (targetEle = targetEle.parentElement) && targetEle.classList.contains('picker-cell')) {
+      if (targetEle && (targetEle.classList.contains('picker-cell') || (targetEle = targetEle.parentElement) && targetEle.classList.contains('picker-cell'))) {
         finalTarget = targetEle
         that.picker.changeTo(targetEle.getAttribute('data-val'), true)
       }
