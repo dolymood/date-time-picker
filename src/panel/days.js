@@ -19,8 +19,8 @@ utils.extend(DaysPanel.prototype, {
   },
   _renderHead: function () {
     this.picker.head.innerHTML = (
-      '<div class="picker-year" data-click="toYears">' + this.picker.dateTime.parsedNow.year + '</div>' +
-      '<div class="picker-date picker-head-active" data-click="toMonths">' +
+      '<div class="picker-year" data-click="toYears" data-active="active">' + this.picker.dateTime.parsedNow.year + '</div>' +
+      '<div class="picker-date picker-head-active" data-click="toMonths" data-active="active">' +
         utils.formatDate(
           this.picker.dateTime.now,
           this.picker.config.MDW.replace('D', '#')
@@ -56,7 +56,7 @@ utils.extend(DaysPanel.prototype, {
     this.arrow = utils.createElement('div', {
       className: 'picker-actions-arrow'
     })
-    this.arrow.innerHTML = '<i data-click="prevMonth">←</i><i data-click="nextMonth">→</i>'
+    this.arrow.innerHTML = '<i data-click="prevMonth" data-active="active">←</i><i data-click="nextMonth" data-active="active">→</i>'
     this.arrowStyle = this.arrow.style
     this.picker.content.appendChild(this.arrow)
   },
@@ -194,7 +194,11 @@ function buildCalendar (datetime, config, cls) {
                   if (klass) {
                     klass = ' class="' + klass + '"'
                   }
-                  return '<i data-click="selV" data-val="' + d + '" ' + klass + '><span>' + d + '</span></i>'
+                  var attr = ' data-val="' + d + '" '
+                  if (d) {
+                    attr += 'data-active="active" data-click="selV" data-val="' + d + '"'
+                  }
+                  return '<i' + attr + klass + '><span>' + d + '</span></i>'
                 }).join('') +
               '</div>'
             )

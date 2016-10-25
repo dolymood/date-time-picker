@@ -26,8 +26,8 @@ utils.extend(ScrollerPanel.prototype, {
   _renderHead: function () {
     var isYears = this.type === 'C'
     this.picker.head.innerHTML = (
-      '<div class="picker-year' + (isYears ? ' picker-head-active' : '') + '"' + (isYears ? '' : ' data-click="toYears"') + '>' + this.picker.dateTime.parsedNow.year + '</div>' +
-      '<div class="picker-date" data-click="toDays">' +
+      '<div class="picker-year' + (isYears ? ' picker-head-active' : '') + '"' + (isYears ? '' : ' data-click="toYears" data-active="active"') + '>' + this.picker.dateTime.parsedNow.year + '</div>' +
+      '<div class="picker-date" data-click="toDays" data-active="active">' +
         utils.formatDate(
           this.picker.dateTime.now,
           this.picker.config.MDW.replace('D', '#')

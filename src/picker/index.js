@@ -22,8 +22,6 @@ function Picker (options, config) {
   }
   this.config = utils.extend(defConfig, config || {})
 
-  this.formatValue = null
-
   this.options = options
   this.needDefFormat = !this.options.format
   this.init()
@@ -103,8 +101,8 @@ utils.extend(pickerPro, {
     this.foot = utils.createElement('div', {
       className: 'picker-foot',
       innerHTML: (
-        '<a href="javascript:;" class="picker-act picker-act-0" data-click="cancel">' + this.config.CANCEL + '</a>' +
-        '<a href="javascript:;" class="picker-act picker-act-1" data-click="ok">' + this.config.OK + '</a>'
+        '<a href="javascript:;" class="picker-act picker-act-0" data-active="active" data-click="cancel">' + this.config.CANCEL + '</a>' +
+        '<a href="javascript:;" class="picker-act picker-act-1" data-active="active" data-click="ok">' + this.config.OK + '</a>'
       )
     })
     this.ele.appendChild(this.foot)
@@ -173,7 +171,21 @@ utils.extend(pickerPro, {
     this.hide()
     this.destroy()
   },
+  __activeStart: function (e) {
+    this.__activeEnd()
+    var targetAction = this._getTargetAction(e, 'active')
+    if (!targetAction.action) {
+      return
+    }
+    this.activeTA = targetAction
+    targetAction.target.classList.add(targetAction.action)
+  },
+  __activeEnd: function () {
+    this.activeTA && this.activeTA.target.classList.remove(this.activeTA.action)
+    this.activeTA = null
+  },
   __touchstart: function (e) {
+    this.__activeStart(e)
     this.__start(e)
     var target = e.target
     var point = e.targetTouches[0]
@@ -194,6 +206,7 @@ utils.extend(pickerPro, {
     }
   },
   __touchend: function (e) {
+    this.__activeEnd(e)
     this.__end(e)
     // check click event
     if (!this.__target) {
@@ -213,6 +226,7 @@ utils.extend(pickerPro, {
     e.__type = 'click'
   },
   __touchcancel: function (e) {
+    this.__activeEnd(e)
     this.__end(e)
     this.__target = null
   },
@@ -222,21 +236,28 @@ utils.extend(pickerPro, {
     this['__' + type](e)
     this._handleEvent(e)
   },
-  _handleEvent: function (e) {
+  _getTargetAction: function (e, type) {
     var target = e.__target || e.target
-    var typeAttr = 'data-' + (e.__type || e.type)
+    var typeAttr = 'data-' + (type || e.__type || e.type)
     var action = ''
     while ((target && target !== this.rootEle) && !(action = target.getAttribute(typeAttr))) {
       target = target.parentNode
     }
-    if (!action) {
+    return {
+      target: target,
+      action: action
+    }
+  },
+  _handleEvent: function (e) {
+    var targetAction = this._getTargetAction(e)
+    if (!targetAction.action) {
       return
     }
-    e.realTarget = target
-    if (this.panel && this.panel[action]) {
-      this.panel[action](e)
-    } else if (this[action]) {
-      this[action](e)
+    e.realTarget = targetAction.target
+    if (this.panel && this.panel[targetAction.action]) {
+      this.panel[targetAction.action](e)
+    } else if (this[targetAction.action]) {
+      this[targetAction.action](e)
     }
   },
   show: function () {
@@ -252,7 +273,7 @@ utils.extend(pickerPro, {
     this.container.removeChild(this.rootEle)
     this.dateTime.destroy()
     this.panel && this.panel.destroy()
-    utils.set2Null(['container', 'rootEle', 'ele', 'head', 'content', 'foot', 'dateTime', 'panel', 'config', 'formatValue', 'lang'], this)
+    utils.set2Null(['container', 'rootEle', 'ele', 'head', 'content', 'foot', 'dateTime', 'panel', 'config', 'lang'], this)
   }
 }, events)
 
