@@ -2,6 +2,7 @@ var path = require('path')
 var webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var DashboardPlugin = require('webpack-dashboard/plugin')
 var pkg = require('./package.json')
 
 module.exports = {
@@ -35,6 +36,7 @@ module.exports = {
     formatter: require('eslint-friendly-formatter')
   },
   plugins: [
+    new DashboardPlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new HtmlWebpackPlugin({
       filename: 'example.html',
@@ -43,5 +45,8 @@ module.exports = {
     }),
     new ExtractTextPlugin(pkg.name + '.min.css')
   ],
-  devtool: false
+  devServer: {
+    contentBase: 'dev'
+  },
+  devtool: 'source-map'
 }
