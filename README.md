@@ -110,7 +110,7 @@ picker
   lang: 'EN', // default 'EN'
   format: 'HH:mm', // default 'HH:mm'
   default: '12:27', // default `new Date()`. If `default` type is string, then it will be parsed to `Date` instance by `format` . Or it can be a `Date` instance
-  minuteStep: 5 // default 5. Select minutes step
+  minuteStep: 5 // default 5. Select minutes step, must be one of [1, 5, 10]
 }
 ```
 
