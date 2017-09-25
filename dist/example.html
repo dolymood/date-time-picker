@@ -21,22 +21,34 @@
   <button id="showTime">Show Time</button>
   <script type="text/javascript">
   showDate.onclick = function () {
-    var dt = new DateTimePicker.Date({
+    var datePicker = new DateTimePicker.Date({
       lang: 'zh-CN',
-      default: date.value
+      default: date.value,
+      min: '2015-08-10',
+      max: '2017-11-20'
     })
-    dt.on('selected', function (formatDate, now) {
+    datePicker.on('selected', function (formatDate, now) {
       console.log('selected date: ', formatDate, now)
       date.value = formatDate
     })
+    datePicker.on('cleared', function () {
+      console.log('cleared date')
+      date.value = ''
+    })
   }
   showTime.onclick = function () {
-    var dt = new DateTimePicker.Time({
-      default: time.value
+    var timePicker = new DateTimePicker.Time({
+      default: time.value,
+      min: '08:30',
+      max: '20:30'
     })
-    dt.on('selected', function (formatTime, now) {
+    timePicker.on('selected', function (formatTime, now) {
       console.log('selected time: ', formatTime, now)
       time.value = formatTime
+    })
+    timePicker.on('cleared', function () {
+      console.log('cleared time')
+      time.value = ''
     })
   }
   </script>
