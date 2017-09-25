@@ -13,7 +13,7 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, './dev'),
-    filename: '[name].min.js',
+    filename: '[name].js',
     library: pkg.library,
     libraryTarget: 'umd'
   },
@@ -43,7 +43,7 @@ module.exports = {
       template: 'example/index.html',
       inject: false
     }),
-    new ExtractTextPlugin(pkg.name + '.min.css')
+    new ExtractTextPlugin(pkg.name + '.css')
   ],
   devServer: {
     contentBase: 'dev'

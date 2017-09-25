@@ -1,0 +1,20 @@
+.picker-container {background-color:#424242;}
+.picker-container .picker-disabled {color:rgba(255, 255, 255, .4);}
+.picker-head {color:rgba(255, 255, 255, .6);background-color:#616161;}
+.picker-actions-arrow i {color:#fff;}
+
+.picker-content {color:#fff;}
+
+.picker-foot {color:#82b1ff;}
+
+/** date picker **/
+.date-picker-days-bdy .picker-now {color:#82b1ff;}
+.date-picker-days-bdy i:before {background-color:#82b1ff;}
+
+.scroller-picker-main .picker-active {color:#82b1ff;}
+
+/** time picker **/
+.time-picker-main {background-color:#616161;}
+.time-picker-main:before {background-color:rgba(130, 177, 255, .9);}
+.time-picker-line {background-color:rgba(130, 177, 255, .9);}
+.time-picker-line:before {background-color:rgba(130, 177, 255, .9);}
