@@ -19,12 +19,22 @@ Picker.extend(DatePicker, {
     this.panel = this.daysPanel = new DaysPanel(this)
   },
   _setDateTime: function () {
+    var prevMonth = utils.prevMonth(this.dateTime.now)
+    var nextMonth = utils.nextMonth(this.dateTime.now)
     this.prevDateTime = new DateTime(utils.extend({}, this.options, {
-      default: utils.prevMonth(this.dateTime.now)
+      default: prevMonth
     }))
+    if (this.prevDateTime.parsedNow.month !== prevMonth.getMonth()) {
+      this.prevDateTime.destroy()
+      this.prevDateTime = null
+    }
     this.nextDateTime = new DateTime(utils.extend({}, this.options, {
-      default: utils.nextMonth(this.dateTime.now)
+      default: nextMonth
     }))
+    if (this.nextDateTime.parsedNow.month !== nextMonth.getMonth()) {
+      this.nextDateTime.destroy()
+      this.nextDateTime = null
+    }
   },
   initEle: function () {
     this.ele.classList.add('date-picker-container')
@@ -33,15 +43,15 @@ Picker.extend(DatePicker, {
     return !!val
   },
   setNowToPrev: function () {
-    this.setNow(this.prevDateTime.now)
+    this.prevDateTime && this.setNow(this.prevDateTime.now)
   },
   setNowToNext: function () {
-    this.setNow(this.nextDateTime.now)
+    this.nextDateTime && this.setNow(this.nextDateTime.now)
   },
   selV: function (e) {
     var target = e.realTarget
     var v = target.getAttribute('data-val') - 0
-    if (this.shouldSet(v)) {
+    if (!target.classList.contains('picker-disabled') && this.shouldSet(v)) {
       this.changeTo(v, true)
     }
   },

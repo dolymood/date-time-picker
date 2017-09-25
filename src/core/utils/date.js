@@ -126,8 +126,21 @@ function nextDate (date) {
   return date
 }
 
+function date2Details (date) {
+  return {
+    year: date.getFullYear(),
+    month: date.getMonth(),
+    date: date.getDate(),
+    day: date.getDay(),
+    hours: date.getHours(),
+    minutes: date.getMinutes()
+  }
+}
+
 module.exports = {
   toDate: toDate,
+
+  date2Details: date2Details,
 
   formatDate: formatDate,
   parseDate: parseDate,

@@ -7,8 +7,8 @@ var config = {
     value: 'year',
     rows: function (dateTime) {
       var rows = []
-      var minYear = 1900
-      var maxYear = 2100
+      var minYear = dateTime.options.min.getFullYear()
+      var maxYear = dateTime.options.max.getFullYear()
       var start = minYear
       while (start <= maxYear) {
         rows.push([start++])
@@ -22,8 +22,8 @@ var config = {
     value: 'month',
     rows: function (dateTime) {
       var rows = []
-      var minMonth = 0
-      var maxMonth = 11
+      var minMonth = dateTime.options.min.getMonth()
+      var maxMonth = dateTime.options.max.getMonth()
       var start = minMonth
       while (start <= maxMonth) {
         rows.push([start++])
@@ -148,8 +148,14 @@ function DateTime (options) {
 
 utils.extend(DateTime.prototype, {
   updateNow: function updateNow (date) {
+    if (date < this.options.min) {
+      date = this.options.min
+    }
+    if (date > this.options.max) {
+      date = this.options.max
+    }
     this.now = new Date(date.getTime())
-    this.parsedNow = parseDate(this.now)
+    this.parsedNow = utils.date2Details(this.now)
   },
   _getConf: function () {
     return config[this.options.type] || config['M']
@@ -174,14 +180,3 @@ utils.extend(DateTime.prototype, {
 }, events)
 
 module.exports = DateTime
-
-function parseDate (date) {
-  return {
-    year: date.getFullYear(),
-    month: date.getMonth(),
-    date: date.getDate(),
-    day: date.getDay(),
-    hours: date.getHours(),
-    minutes: date.getMinutes()
-  }
-}

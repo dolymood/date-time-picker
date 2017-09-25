@@ -161,6 +161,9 @@ utils.extend(DaysPanel.prototype, {
 module.exports = DaysPanel
 
 function buildCalendar (datetime, config, cls) {
+  if (!datetime) {
+    return ''
+  }
   var now = new Date()
   var parsedNow = {
     year: now.getFullYear(),
@@ -168,6 +171,9 @@ function buildCalendar (datetime, config, cls) {
     date: now.getDate()
   }
   var parsedCurrent = datetime.parsedNow
+  var parsedMin = utils.date2Details(datetime.options.min)
+  var parsedMax = utils.date2Details(datetime.options.max)
+  var yearMonthOK = checkInrange(parsedCurrent, parsedMin, parsedMax)
   cls = ' picker-bdy-' + cls
   return (
     '<div class="picker-bdy' + cls + '">' +
@@ -185,11 +191,10 @@ function buildCalendar (datetime, config, cls) {
                 row.map(function (d) {
                   var klass = parsedCurrent.year === parsedNow.year && parsedCurrent.month === parsedNow.month && d === parsedNow.date ? 'picker-now' : ''
                   if (d === parsedCurrent.date) {
-                    if (klass) {
-                      klass += ' picker-active'
-                    } else {
-                      klass = 'picker-active'
-                    }
+                    klass = klass ? (klass + ' picker-active') : 'picker-active'
+                  }
+                  if (!yearMonthOK || checkDisabled(d, parsedCurrent, parsedMin, parsedMax)) {
+                    klass = klass ? (klass + ' picker-disabled') : 'picker-disabled'
                   }
                   if (klass) {
                     klass = ' class="' + klass + '"'
@@ -207,4 +212,31 @@ function buildCalendar (datetime, config, cls) {
       '</div>' +
     '</div>'
   )
+}
+
+function checkInrange (parsedCurrent, parsedMin, parsedMax) {
+  var ok = false
+  if (parsedCurrent.year > parsedMin.year) {
+    ok = true
+  } else if (parsedCurrent.year === parsedMin.year) {
+    ok = parsedCurrent.month >= parsedMin.month
+  }
+  if (ok) {
+    if (parsedCurrent.year < parsedMax.year) {
+      ok = true
+    } else if (parsedCurrent.year === parsedMax.year) {
+      ok = parsedCurrent.month <= parsedMax.month
+    }
+  }
+  return ok
+}
+
+function checkDisabled (date, parsedCurrent, parsedMin, parsedMax) {
+  if (parsedCurrent.year === parsedMin.year && parsedCurrent.month === parsedMin.month) {
+    return date < parsedMin.date
+  }
+  if (parsedCurrent.year === parsedMax.year && parsedCurrent.month === parsedMax.month) {
+    return date > parsedMax.date
+  }
+  return false
 }

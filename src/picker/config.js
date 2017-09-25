@@ -5,7 +5,8 @@ module.exports = {
     MDW: 'M月d日D',
     YM: 'yyyy年M月',
     OK: '确定',
-    CANCEL: '取消'
+    CANCEL: '取消',
+    CLEAR: '清除'
   },
   'EN': {
     day: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -13,6 +14,7 @@ module.exports = {
     MDW: 'D, MM-d',
     YM: 'yyyy-M',
     OK: 'OK',
-    CANCEL: 'CANCEL'
+    CANCEL: 'CANCEL',
+    CLEAR: 'CLEAR'
   }
 }

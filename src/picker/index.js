@@ -25,9 +25,7 @@ function Picker (options, config) {
   this.options = options
   this.needDefFormat = !this.options.format
   this.init()
-  if (this.options.format && this.options.default && utils.isStr(this.options.default)) {
-    this.options.default = utils.parseDate(this.options.default, this.options.format)
-  }
+  this._setOptions()
   this._init()
 }
 
@@ -43,6 +41,21 @@ Picker.extend = function (ChildFn, proto) {
 }
 
 utils.extend(pickerPro, {
+  _setOptions: function () {
+    var that = this
+    var minMax = {
+      min: new Date(1900, 0, 1, 0, 0, 0, 0),
+      max: new Date(2100, 11, 31, 23, 59, 59, 999)
+    }
+    var keys = ['default', 'min', 'max']
+    keys.forEach(function (key) {
+      if (that.options.format && that.options[key] && utils.isStr(that.options[key])) {
+        that.options[key] = utils.parseDate(that.options[key], that.options.format)
+      } else if (minMax[key]) {
+        that.options[key] = minMax[key]
+      }
+    })
+  },
   setDateTime: function (noRender) {
     this.dateTime = new DateTime(this.options)
     this._setDateTime(noRender)
@@ -101,8 +114,9 @@ utils.extend(pickerPro, {
     this.foot = utils.createElement('div', {
       className: 'picker-foot',
       innerHTML: (
-        '<a href="javascript:;" class="picker-act picker-act-0" data-active="active" data-click="cancel">' + this.config.CANCEL + '</a>' +
-        '<a href="javascript:;" class="picker-act picker-act-1" data-active="active" data-click="ok">' + this.config.OK + '</a>'
+        '<a href="javascript:;" class="picker-act picker-act-clear" data-active="active" data-click="clear">' + this.config.CLEAR + '</a>' +
+        '<a href="javascript:;" class="picker-act picker-act-cancel" data-active="active" data-click="cancel">' + this.config.CANCEL + '</a>' +
+        '<a href="javascript:;" class="picker-act picker-act-ok" data-active="active" data-click="ok">' + this.config.OK + '</a>'
       )
     })
     this.ele.appendChild(this.foot)
@@ -125,12 +139,6 @@ utils.extend(pickerPro, {
     this.rootEle.removeEventListener(name, this, false)
   },
 
-  desEvts: function () {
-    this._removeEvt(EVENT_START)
-    this._removeEvt(EVENT_MOVE)
-    this._removeEvt(EVENT_END)
-    this._removeEvt(EVENT_CANCEL)
-  },
   _stop: function (e) {
     e.preventDefault()
     e.stopPropagation()
@@ -156,10 +164,14 @@ utils.extend(pickerPro, {
   shouldSet: function (val) {
     return true
   },
+  clear: function () {
+    this.setNow()
+    this.trigger('cleared')
+    this.hide()
+  },
   cancel: function () {
     this.trigger('canceled')
     this.hide()
-    this.destroy()
   },
   ok: function () {
     var formatValue = this.dateTime.now
@@ -169,7 +181,6 @@ utils.extend(pickerPro, {
     }
     this.trigger('selected', formatValue, this.dateTime.now)
     this.hide()
-    this.destroy()
   },
   __activeStart: function (e) {
     this.__activeEnd()
@@ -261,10 +272,19 @@ utils.extend(pickerPro, {
     }
   },
   show: function () {
-    this.ele && (this.ele.style.display = 'block')
+    if (this.rootEle) {
+      this.rootEle.style.display = 'block'
+      this._handleAni()
+    }
   },
   hide: function () {
-    this.ele && (this.ele.style.display = 'none')
+    this.rootEle && (this.rootEle.style.display = 'none')
+  },
+  desEvts: function () {
+    this._removeEvt(EVENT_START)
+    this._removeEvt(EVENT_MOVE)
+    this._removeEvt(EVENT_END)
+    this._removeEvt(EVENT_CANCEL)
   },
   destroy: function () {
     this.trigger('destroy')
