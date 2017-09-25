@@ -47,6 +47,9 @@ btn.onclick = function () {
     // formatData = 2016-10-19
     // now = Date instance -> Wed Oct 19 2016 20:28:12 GMT+0800 (CST)
   })
+  datePicker.on('cleared', function () {
+    // clicked clear btn
+  })
 }
 ```
 
@@ -58,6 +61,9 @@ btn.onclick = function () {
   timePicker.on('selected', function (formatTime, now) {
     // formatTime = 18:30
     // now = Date instance -> Wed Oct 19 2016 18:30:13 GMT+0800 (CST)
+  })
+  timePicker.on('cleared', function () {
+    // clicked clear btn
   })
 }
 ```
@@ -80,6 +86,10 @@ picker
   .on('selected', function (formatValue, now) {
     console.log(formatValue, now)
   })
+  // click CLEAR button
+  .on('cleared', function () {
+    console.log('cleared select value')
+  })
   // click CANCEL button
   // also trigger `destroy` event
   .on('canceled', function () {
@@ -100,6 +110,8 @@ picker
   lang: 'EN', // default 'EN'. One of 'EN', 'zh-CN'
   format: 'yyyy-MM-dd', // default 'yyyy-MM-dd'
   default: '2016-10-19', // default `new Date()`. If `default` type is string, then it will be parsed to `Date` instance by `format` . Or it can be a `Date` instance
+  min: '2016-02-10', // min date value, `{String | Date}`, default `new Date(1900, 0, 1, 0, 0, 0, 0)`
+  max: '2018-11-08' // max date value, `{String | Date}`, default `new Date(2100, 11, 31, 23, 59, 59, 999)`
 }
 ```
 
@@ -110,7 +122,9 @@ picker
   lang: 'EN', // default 'EN'
   format: 'HH:mm', // default 'HH:mm'
   default: '12:27', // default `new Date()`. If `default` type is string, then it will be parsed to `Date` instance by `format` . Or it can be a `Date` instance
-  minuteStep: 5 // default 5. Select minutes step, must be one of [1, 5, 10]
+  minuteStep: 5, // default 5. Select minutes step, must be one of [1, 5, 10]
+  min: '00:00', // min time value, `{String | Date}`, default `new Date(1900, 0, 1, 0, 0, 0, 0)`
+  max: '23:59' // max time value, `{String | Date}`, default `new Date(2100, 11, 31, 23, 59, 59, 999)`
 }
 ```
 
@@ -125,7 +139,8 @@ Default English(EN):
   MDW: 'D, MM-d',
   YM: 'yyyy-M',
   OK: 'OK',
-  CANCEL: 'CANCEL'
+  CANCEL: 'CANCEL',
+  CLEAR: 'CLEAR'
 }
 ```
 
@@ -138,7 +153,8 @@ Default 中文(zh-CN):
   MDW: 'M月d日D',
   YM: 'yyyy年M月',
   OK: '确定',
-  CANCEL: '取消'
+  CANCEL: '取消',
+  CLEAR: '清除'
 }
 ```
 
