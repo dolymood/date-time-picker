@@ -157,9 +157,12 @@ utils.extend(pickerPro, {
   selV: function (e) {
     var target = e.realTarget
     var v = target.getAttribute('data-val') - 0
-    if (this.shouldSet(v)) {
-      this.changeTo(v)
+    if (!target.classList.contains('picker-disabled') && this.shouldSet(v)) {
+      this._selV(v)
     }
+  },
+  _selV: function (v) {
+    this.changeTo(v, true)
   },
   shouldSet: function (val) {
     return true

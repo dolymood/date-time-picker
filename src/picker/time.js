@@ -28,9 +28,9 @@ Picker.extend(TimePicker, {
   initEle: function () {
     this.ele.classList.add('time-picker-container')
   },
-  selV: function (e) {
+  _selV: function (v) {
     var that = this
-    this.super.selV.call(this, e)
+    this.super._selV.call(this, v)
     setTimeout(function () {
       that.toMinutes()
     })

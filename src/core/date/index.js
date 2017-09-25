@@ -78,7 +78,7 @@ function parse (strDate, format) {
   var token = ''
   var tmp
 
-  var ret = new Date(2000, 0, 1)
+  var ret = new Date()
   while (i < format.length) {
     token = format.charAt(i)
     while ((i + 1 < format.length) && parts[token + format.charAt(i + 1)] !== undefined) {

@@ -118,7 +118,8 @@ function buildItem (type, parser, getLen) {
 
     var ulCls = ''
     var minuteStep = 1
-    if (type === 'minutes') {
+    var isMinutes = type === 'minutes'
+    if (isMinutes) {
       minuteStep = dateTime.options.minuteStep || 5
       ulCls += 'time-picker-minutes-' + minuteStep
     }
@@ -132,9 +133,26 @@ function buildItem (type, parser, getLen) {
       v += 'rotate(' + r + 'deg)'
       return '-webkit-transform:' + v + ';transform:' + v + ';'
     }
+    var min = utils.date2Details(dateTime.options.min)
+    var max = utils.date2Details(dateTime.options.max)
     var curr = dateTime.parsedNow[type]
     var activeStyle = ''
     var innerCls = ''
+    var checkDisabled = function (v) {
+      if (isMinutes) {
+        var hours = dateTime.parsedNow.hours
+        if (hours === min.hours) {
+          return v < min.minutes
+        } else if (hours === max.hours) {
+          return v > max.minutes
+        } else {
+          return false
+        }
+      } else {
+        // hours
+        return v < min.hours || v > max.hours
+      }
+    }
 
     return (
       '<ul class="' + ulCls + '">' +
@@ -151,6 +169,9 @@ function buildItem (type, parser, getLen) {
           }
           if (minuteStep > 1 && i % minuteStep !== 0) {
             return ''
+          }
+          if (checkDisabled(v)) {
+            klass += ' picker-disabled'
           }
           if (isDouble && (!v || v > 12)) {
             klass += ' picker-cell-inner'
