@@ -3,10 +3,16 @@ var events = require('../core/events')
 var DateTime = require('../core/datetime/index')
 var DEFCONFIG = require('./config')
 
-var EVENT_START = 'touchstart'
-var EVENT_MOVE = 'touchmove'
-var EVENT_END = 'touchend'
-var EVENT_CANCEL = 'touchcancel'
+var typeMap = {
+  mousedown: 'touchstart',
+  mousemove: 'touchmove',
+  mouseup: 'touchend'
+}
+var supportTouch = 'ontouchstart' in window
+var EVENT_START = supportTouch ? 'touchstart' : 'mousedown'
+var EVENT_MOVE = supportTouch ? 'touchmove' : 'mousemove'
+var EVENT_END = supportTouch ? 'touchend' : 'mouseup'
+var EVENT_CANCEL = supportTouch ? 'touchcancel' : 'mouseup'
 
 function Picker (options, config) {
   this.container = document.body
@@ -247,6 +253,11 @@ utils.extend(pickerPro, {
   handleEvent: function (e) {
     this._stop(e)
     var type = e.type
+    if (typeMap[type]) {
+      type = typeMap[type]
+      e.__type = type
+      e.touches = e.changedTouches = e.targetTouches = [e]
+    }
     this['__' + type](e)
     this._handleEvent(e)
   },
