@@ -1,7 +1,7 @@
 {
   "name": "date-time-picker",
   "library": "DateTimePicker",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "No Dependencies Lightweight Material Date/Time Picker For Mobile Web",
   "main": "src/date+time.js",
   "scripts": {
