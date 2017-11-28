@@ -22,6 +22,7 @@ function Picker (options, config) {
 
   this.lang = options.lang || 'EN'
   this.lang = options.lang
+  this.destroyed = false
   var defConfig = DEFCONFIG[this.lang]
   if (!defConfig) {
     defConfig = DEFCONFIG['EN']
@@ -301,6 +302,9 @@ utils.extend(pickerPro, {
     this._removeEvt(EVENT_CANCEL)
   },
   destroy: function () {
+    if (this.destroyed) {
+      return
+    }
     this.trigger('destroy')
     this.hide()
     this.desEvts()
@@ -308,6 +312,7 @@ utils.extend(pickerPro, {
     this.dateTime.destroy()
     this.panel && this.panel.destroy()
     utils.set2Null(['container', 'rootEle', 'ele', 'head', 'content', 'foot', 'dateTime', 'panel', 'config', 'lang'], this)
+    this.destroyed = true
   }
 }, events)
 
