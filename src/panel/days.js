@@ -15,7 +15,6 @@ utils.extend(DaysPanel.prototype, {
     }
     this._renderHead()
     this.main.innerHTML = buildCalendar(this.picker.prevDateTime, this.picker.config, 'prev') + buildCalendar(this.picker.dateTime, this.picker.config, 'curr') + buildCalendar(this.picker.nextDateTime, this.picker.config, 'next')
-    this.afterRender()
   },
   _renderHead: function () {
     this.picker.head.innerHTML = (

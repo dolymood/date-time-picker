@@ -16,12 +16,12 @@ function ScrollerPanel (picker) {
 
 utils.extend(ScrollerPanel.prototype, {
   render: function () {
+    this.rows = this.picker.dateTime.getRows()
     if (!this.main) {
       this._init()
     }
     this._renderHead()
     this.main.innerHTML = CONFIG[this.type](this.picker.dateTime, this.rows)
-    this._afterRender()
   },
   _renderHead: function () {
     var isYears = this.type === 'C'
@@ -35,15 +35,17 @@ utils.extend(ScrollerPanel.prototype, {
       '</div>'
     )
   },
-  _afterRender: function () {
+  afterRender: function () {
     var activeEle = this.main.querySelector('.picker-active')
+    if (!activeEle) {
+      return
+    }
     this.itemHeight = activeEle.offsetHeight
     this.activeEle = activeEle
     var t = activeEle.offsetTop - (this.contentHeight - this.itemHeight) / 2
     this._slideTo(-t, 0)
   },
   _init: function () {
-    this.rows = this.picker.dateTime.getRows()
     this._initMain()
     this._initMidd()
   },

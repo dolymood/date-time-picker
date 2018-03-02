@@ -77,7 +77,6 @@ utils.extend(pickerPro, {
     this.options.default = now
     this.setDateTime()
   },
-  afterRender: utils.noop,
   _setDateTime: utils.noop,
   init: utils.noop,
   _init: function () {
@@ -316,7 +315,7 @@ utils.extend(pickerPro, {
   }
 }, events)
 
-var es = ['selfChange', 'render', '__start', '__move', '__end']
+var es = ['selfChange', 'render', 'afterRender', '__start', '__move', '__end']
 es.forEach(function (name) {
   pickerPro[name] = function () {
     this.panel && this.panel[name] && this.panel[name].apply(this.panel, arguments)

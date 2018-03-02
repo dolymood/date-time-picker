@@ -20,6 +20,7 @@ function TimePanel (picker) {
 
 utils.extend(TimePanel.prototype, {
   render: function () {
+    this.rows = this.picker.dateTime.getRows()
     if (!this.main) {
       this._init()
     }
@@ -33,15 +34,15 @@ utils.extend(TimePanel.prototype, {
       '</div>'
     )
     this.main.innerHTML = CONFIG[this.type](this.picker.dateTime, this.rows)
-    this.afterRender()
   },
   afterRender: function () {
+    this.headHourEle = this.picker.head.querySelector('.picker-hour')
+    this.headMinuteEle = this.picker.head.querySelector('.picker-minute')
     this.headActiveEle = this.picker.head.querySelector('.picker-head-active')
     this.activeEle = this.main.querySelector('.picker-active')
     this.pickerLineEle = this.main.querySelector('.time-picker-line')
   },
   _init: function () {
-    this.rows = this.picker.dateTime.getRows()
     this._initMain()
   },
   _initMain: function () {
@@ -58,8 +59,11 @@ utils.extend(TimePanel.prototype, {
     this.mainStyle.display = 'none'
   },
   selfChange: function () {
+    var h = utils.formatDate(this.picker.dateTime.now, 'HH')
+    var m = utils.formatDate(this.picker.dateTime.now, 'mm')
+    this.headHourEle.innerHTML = h
+    this.headMinuteEle.innerHTML = m
     var v = this.picker.dateTime.getLevelValue()
-    this.headActiveEle.innerHTML = utils.pad(v, 2)
     var newActiveEle = this.main.querySelector('.picker-cell[data-val="' + v + '"]')
     this.activeEle && this.activeEle.classList.remove('picker-active')
     newActiveEle.classList.add('picker-active')
@@ -93,7 +97,7 @@ utils.extend(TimePanel.prototype, {
   },
   destroy: function () {
     this.picker.content.removeChild(this.main)
-    utils.set2Null(['picker', 'main', 'mainStyle', 'headActiveEle', 'activeEle', 'pickerLineEle', '__move', '__end'], this)
+    utils.set2Null(['picker', 'main', 'mainStyle', 'headHourEle', 'headMinuteEle', 'headActiveEle', 'activeEle', 'pickerLineEle', '__move', '__end'], this)
   }
 })
 

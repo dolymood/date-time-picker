@@ -22,8 +22,18 @@ var config = {
     value: 'month',
     rows: function (dateTime) {
       var rows = []
+      var now = dateTime.now
+      var nowYear = now.getFullYear()
+      var minYear = dateTime.options.min.getFullYear()
       var minMonth = dateTime.options.min.getMonth()
+      var maxYear = dateTime.options.max.getFullYear()
       var maxMonth = dateTime.options.max.getMonth()
+      if (nowYear > minYear) {
+        minMonth = 0
+      }
+      if (maxYear > nowYear) {
+        maxMonth = 11
+      }
       var start = minMonth
       while (start <= maxMonth) {
         rows.push([start++])
