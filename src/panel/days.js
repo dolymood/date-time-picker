@@ -231,11 +231,12 @@ function checkInrange (parsedCurrent, parsedMin, parsedMax) {
 }
 
 function checkDisabled (date, parsedCurrent, parsedMin, parsedMax) {
+  var disabled = false
   if (parsedCurrent.year === parsedMin.year && parsedCurrent.month === parsedMin.month) {
-    return date < parsedMin.date
+    disabled = date < parsedMin.date
   }
-  if (parsedCurrent.year === parsedMax.year && parsedCurrent.month === parsedMax.month) {
-    return date > parsedMax.date
+  if (!disabled && parsedCurrent.year === parsedMax.year && parsedCurrent.month === parsedMax.month) {
+    disabled = date > parsedMax.date
   }
-  return false
+  return disabled
 }
